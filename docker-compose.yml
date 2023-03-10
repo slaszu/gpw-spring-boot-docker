@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  gpw-server:
+    container_name: gpw-server
+    build:
+      context: docker-gpw-server
+      dockerfile: Dockerfile
+    image: gpw-server:latest
+    ports:
+      - 18888:8888
+    networks:
+      - spring-cloud-network
+
+  mysql:
+    container_name: gpw-mysql
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root_pass_32343#@' # TODO: Change this
+      MYSQL_USER: 'gpw'
+      MYSQL_PASS: 'gpw_pass_123!'
+    volumes:
+      - ./data-mysql:/var/lib/mysql
+    ports:
+      - "13306:3306"
+    networks:
+      - spring-cloud-network
+
+networks:
+  spring-cloud-network:
+    driver: bridge
